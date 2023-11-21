@@ -40,7 +40,7 @@ const updateTraining = () => {
 };
 
   return (
-    <div>
+    <React.Fragment>
       <Button variant="outlined" color="primary" onClick={handleClickOpen}>
         Edit Training
       </Button>
@@ -101,6 +101,6 @@ const updateTraining = () => {
           </Button>
         </DialogActions>
       </Dialog>
-    </div>
+    </React.Fragment>
   );
 }

@@ -8,7 +8,7 @@ import "ag-grid-community/styles/ag-theme-material.css";
 import { fetchCustomers, deleteCustomer, updateCustomer, saveCustomer } from './apiService'; // Import from apiService.js
 
 import AddCustomer from './AddCustomer';
-import EditCustomer from './EditCustomer';
+import EditCustomer from './Editcustomer';
 
 function CustomerList() {
   const [customers, setCustomers] = useState([]);

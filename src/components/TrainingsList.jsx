@@ -1,4 +1,4 @@
-import React, { useState, useEffect, forwardRef, useImperativeHandle } from 'react';
+import React, { useState, useEffect } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { Snackbar, Button, Box, TextField, Checkbox, FormGroup, FormControlLabel } from '@mui/material';
 import Addtraining from './Addtraining';
@@ -13,7 +13,6 @@ function TrainingsList() {
   const [gridApi, setGridApi] = useState(null);
   const [searchText, setSearchText] = useState('');
   const API_BASE_URL_TRAININGS = import.meta.env.VITE_API_URL_TRAININGS;
-  const API_BASE_URL = import.meta.env.VITE_API_URL;
   
   const [columnDefs] = useState([
     {
