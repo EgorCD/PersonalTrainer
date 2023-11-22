@@ -10,13 +10,15 @@ import SendIcon from '@mui/icons-material/Send';
 import Pagination from '@mui/material/Pagination';
 
 function TrainingsList() {
-  const [trainings, setTrainings] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [gridApi, setGridApi] = useState(null);
-  const [searchText, setSearchText] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const API_BASE_URL_TRAININGS = import.meta.env.VITE_API_URL_TRAININGS;
+
+  // State hooks for various functionalities
+  const [trainings, setTrainings] = useState([]); // State for training sessions
+  const [open, setOpen] = useState(false); // State for the Snackbar component
+  const [gridApi, setGridApi] = useState(null); // State for AG Grid API instance
+  const [searchText, setSearchText] = useState(''); // State for search functionality
+  const [currentPage, setCurrentPage] = useState(1); // State for current pagination page
+  const [rowsPerPage, setRowsPerPage] = useState(10); // State for number of rows per page
+  const API_BASE_URL_TRAININGS = import.meta.env.VITE_API_URL_TRAININGS; // API base URL
 
   const [columnDefs] = useState([
     {
@@ -71,8 +73,10 @@ function TrainingsList() {
     },
   ]);
 
+  // Stores the fields of the columns that are currently visible
   const [visibleColumns, setVisibleColumns] = useState(columnDefs.map(col => col.field));
 
+  // Fetches trainings initially and on changes to currentPage or rowsPerPage
   useEffect(() => {
     fetchTrainings();
   }, []);
@@ -81,35 +85,42 @@ function TrainingsList() {
     fetchTrainings();
   }, [currentPage, rowsPerPage]);
 
+  // Calculates the total number of pages for pagination
   const pageCount = Math.ceil(trainings.length / rowsPerPage);
 
+  // Handle changes in pagination
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
   };
 
+  // Calculate the trainings to be shown on the current page
   const currentTrainings = trainings.slice(
     (currentPage - 1) * rowsPerPage,
     currentPage * rowsPerPage
   );
 
+  // Update visible columns in the grid when the visibleColumns state changes
   useEffect(() => {
     if (gridApi) {
       gridApi.setColumnDefs(columnDefs.filter(col => visibleColumns.includes(col.field)));
     }
   }, [visibleColumns, gridApi]);
 
+  // Apply the search filter to the grid data
   useEffect(() => {
     if (gridApi) {
       gridApi.setQuickFilter(searchText);
     }
   }, [searchText, gridApi]);
 
+  // Handle changes in column visibility
   const handleColumnVisibilityChange = (event) => {
     setVisibleColumns(prev => event.target.checked
       ? [...prev, event.target.name]
       : prev.filter(colField => colField !== event.target.name));
   };
 
+  // Export the current view of the grid to a CSV file
   const exportToCsv = () => {
     const exportColumns = visibleColumns.filter(col => col !== 'delete' & col !== 'edit');
     gridApi.exportDataAsCsv({
@@ -117,10 +128,12 @@ function TrainingsList() {
     });
   };
 
+  // Initialize the grid API on grid load
   const onGridReady = (params) => {
     setGridApi(params.api);
   };
 
+  // Handle cell editing stopped event to update training data
   const onCellEditingStopped = (event) => {
     if (event.value !== event.oldValue) {
       console.log("sth");
@@ -129,6 +142,7 @@ function TrainingsList() {
     }
   };
 
+  // Fetches trainings from the API and updates state
   const fetchTrainings = () => {
     fetch(`${API_BASE_URL_TRAININGS}/gettrainings`)
       .then(response => response.json())
@@ -136,18 +150,21 @@ function TrainingsList() {
       .catch(error => console.error('Error fetching trainings:', error));
   };
 
+  // Handles adding a new training
   const handleAddTraining = (newTraining) => {
     addTraining(newTraining)
       .then(() => fetchTrainings())
       .catch(error => console.error('Error adding training:', error));
   };
 
+  // Handles updating a training
   const handleUpdateTraining = (updatedTraining, trainingId) => {
     updateTraining(updatedTraining, trainingId)
       .then(() => fetchTrainings())
       .catch(error => console.error('Error updating training:', error));
   };
 
+  // Handles deleting a training
   const handleDeleteTraining = (trainingId) => {
     if (window.confirm('Are you sure you want to delete this training?')) {
       deleteTraining(trainingId)

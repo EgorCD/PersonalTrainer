@@ -17,13 +17,17 @@ import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
 
+// Creating a dark theme for the application
 const darkTheme = createTheme({
   palette: {
     mode: 'dark',
   },
 });
 
+// Defining the width for the drawer
 const drawerWidth = 240;
+
+// Navigation items for the app
 const navItems = [
   { name: 'Customers', path: '/customers' },
   { name: 'Trainings', path: '/trainings' },
@@ -36,8 +40,11 @@ function DrawerAppBar(props) {
   const theme = useTheme();
 
   const { window } = props;
+
+  // State for handling mobile drawer toggle
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
+  // Function to toggle the state of the mobile drawer
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
@@ -62,6 +69,7 @@ function DrawerAppBar(props) {
     </Box>
   );
 
+  // Container for the drawer to render in
   const container = window !== undefined ? () => window().document.body : undefined;
 
   return (

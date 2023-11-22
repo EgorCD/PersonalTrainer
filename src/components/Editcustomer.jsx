@@ -8,7 +8,11 @@ import DialogTitle from '@mui/material/DialogTitle';
 import EditIcon from '@mui/icons-material/Edit';
 
 export default function EditCustomer(props) {
+
+    // State for controlling the open status of the dialog
     const [open, setOpen] = React.useState(false);
+
+    // State for storing the customer's details
     const [customer, setCustomer] = React.useState({
         firstname: '',
         lastname: '',
@@ -19,6 +23,7 @@ export default function EditCustomer(props) {
         phone: ''
     });
 
+    // Function to open the dialog and initialize customer data from props
     const handleClickOpen = () => {
         setCustomer({
             firstname: props.customer.firstname,
@@ -32,14 +37,17 @@ export default function EditCustomer(props) {
         setOpen(true);
     };
 
+    // Function to close the dialog
     const handleClose = () => {
         setOpen(false);
     };
 
+    // Function to handle changes in text fields and update customer state
     const handleInputChange = (event) => {
         setCustomer({ ...customer, [event.target.name]: event.target.value });
     };
 
+    // Function to call the updateCustomer function passed in props and close the dialog
     const updateCustomer = () => {
         props.updateCustomer(customer);
         handleClose();

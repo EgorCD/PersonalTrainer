@@ -8,6 +8,8 @@ import DialogTitle from '@mui/material/DialogTitle';
 import AddIcon from '@mui/icons-material/Add';
 
 export default function AddCustomer(props) {
+
+    // State hooks for managing the dialog's open state and customer data
     const [open, setOpen] = useState(false);
     const [customer, setCustomer] = useState({
         firstname: '',
@@ -19,18 +21,22 @@ export default function AddCustomer(props) {
         phone: ''
     });
 
+    // Function to handle dialog open action
     const handleClickOpen = () => {
         setOpen(true);
     };
 
+    // Function to handle dialog close action
     const handleClose = () => {
         setOpen(false);
     };
 
+    // Function to handle changes in text fields
     const handleInputChange = (event) => {
         setCustomer({ ...customer, [event.target.name]: event.target.value });
     };
 
+    // Function to save the new customer data
     const addCustomer = () => {
         props.saveCustomer(customer);
         handleClose();

@@ -9,6 +9,8 @@ import AddIcon from '@mui/icons-material/Add';
 import moment from 'moment';
 
 export default function AddTraining(props) {
+
+    // State hooks for managing the dialog's open state and training data
     const [open, setOpen] = useState(false);
     const [training, setTraining] = useState({
         date: '',
@@ -17,18 +19,22 @@ export default function AddTraining(props) {
         customer: ''
     });
 
+    // Function to handle dialog open action
     const handleClickOpen = () => {
         setOpen(true);
     };
 
+    // Function to handle dialog close action
     const handleClose = () => {
         setOpen(false);
     };
 
+    // Function to handle changes in text fields
     const handleInputChange = (event) => {
         setTraining({ ...training, [event.target.name]: event.target.value });
     };
 
+    // Function to format and save the new training data
     const addTraining = () => {
         const formattedTraining = {
             ...training,

@@ -9,7 +9,11 @@ import moment from 'moment';
 import EditIcon from '@mui/icons-material/Edit';
 
 export default function EditTraining(props) {
+
+  // State for controlling the open status of the dialog
   const [open, setOpen] = useState(false);
+
+  // State for storing the training session's details
   const [training, setTraining] = useState({
     date: '',
     duration: '',
@@ -17,9 +21,10 @@ export default function EditTraining(props) {
     customer: ''
   });
 
+  // Function to open the dialog and initialize training data from props
   const handleClickOpen = () => {
     setTraining({
-      date: moment(props.training.date).format('YYYY-MM-DDTHH:mm'),
+      date: moment(props.training.date).format('YYYY-MM-DDTHH:mm'), // Formatting the date
       duration: props.training.duration,
       activity: props.training.activity,
       customer: props.training.customer
@@ -27,14 +32,17 @@ export default function EditTraining(props) {
     setOpen(true);
   };
 
+  // Function to close the dialog
   const handleClose = () => {
     setOpen(false);
   };
 
+  // Function to handle changes in text fields and update training state
   const handleInputChange = (event) => {
     setTraining({ ...training, [event.target.name]: event.target.value });
   };
 
+  // Function to call the updateTraining function passed in props and close the dialog
   const updateTraining = () => {
     props.updateTraining(training);
     handleClose();

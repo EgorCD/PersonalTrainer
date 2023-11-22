@@ -11,14 +11,16 @@ import EditCustomer from './Editcustomer';
 import { deleteCustomer, updateCustomer, saveCustomer } from './apiService';
 
 function CustomerList() {
-  const [customers, setCustomers] = useState([]);
-  const [open, setOpen] = useState(false);
-  const [gridApi, setGridApi] = useState(null);
-  const [searchText, setSearchText] = useState('');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-  const API_BASE_URL = import.meta.env.VITE_API_URL;
 
+  // State hooks for managing customers data, selected rows, and snackbar visibility
+  const [customers, setCustomers] = useState([]); // State for customer data
+  const [open, setOpen] = useState(false); // State for dialog open/close
+  const [gridApi, setGridApi] = useState(null); // State for AG Grid API instance
+  const [searchText, setSearchText] = useState(''); // State for search text
+  const [currentPage, setCurrentPage] = useState(1); // State for current page in pagination
+  const [rowsPerPage, setRowsPerPage] = useState(10); // State for rows per page in pagination
+  const API_BASE_URL = import.meta.env.VITE_API_URL; // API base URL from environment variables
+ 
   const [columnDefs] = useState([
     {
       headerName: 'Actions',
@@ -45,8 +47,10 @@ function CustomerList() {
     { headerName: 'City', field: 'city', sortable: true, filter: true, editable: true },
   ]);
 
+  // Stores the fields of the columns that are currently visible
   const [visibleColumns, setVisibleColumns] = useState(columnDefs.map(col => col.field));
 
+  // Fetches customers initially and on changes to currentPage or rowsPerPage
   useEffect(() => {
     fetchCustomers()
   }, []);
@@ -55,50 +59,60 @@ function CustomerList() {
     fetchCustomers();
   }, [currentPage, rowsPerPage]);
 
+  // Calculates the total number of pages for pagination
   const pageCount = Math.ceil(customers.length / rowsPerPage);
 
+  // Handle changes in pagination
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
   };
 
+  // Calculate the customers to be shown on the current page
   const currentCustomers = customers.slice(
     (currentPage - 1) * rowsPerPage,
     currentPage * rowsPerPage
   );
 
+  // Update visible columns in the grid when the visibleColumns state changes
   useEffect(() => {
     if (gridApi) {
       gridApi.setColumnDefs(columnDefs.filter(col => visibleColumns.includes(col.field)));
     }
   }, [visibleColumns, gridApi]);
 
+  // Apply the search filter to the grid data
   useEffect(() => {
     if (gridApi) {
       gridApi.setQuickFilter(searchText);
     }
   }, [searchText, gridApi]);
 
+  // Handle changes in column visibility
   const handleColumnVisibilityChange = (event) => {
     setVisibleColumns(prev => event.target.checked
       ? [...prev, event.target.name]
       : prev.filter(colField => colField !== event.target.name));
   };
 
+  // Export the current view of the grid to a CSV file
   const exportToCsv = () => {
     gridApi.exportDataAsCsv({
       columnKeys: visibleColumns
     });
   };
 
+  // Initialize the grid API on grid load
   const onGridReady = (params) => {
     setGridApi(params.api);
   };
 
+  // Extracts customer ID from a URL
   const getCustomerIdFromLink = (link) => {
     const parts = link.split('/');
     return parts[parts.length - 1];
   };
 
+  // Handle cell editing stopped event to update customer data
   const onCellEditingStopped = (event) => {
     if (event.value !== event.oldValue) {
       const updatedCustomer = { ...event.data, [event.colDef.field]: event.value };
@@ -106,6 +120,7 @@ function CustomerList() {
     }
   };
 
+  // Fetches customers from the API and updates state
   const fetchCustomers = () => {
     fetch(`${API_BASE_URL}/customers`)
       .then(response => {
@@ -116,6 +131,7 @@ function CustomerList() {
       .catch(err => console.error(err));
   };
 
+  // Handles deleting a customer
   const handleDeleteCustomer = (customerId) => {
     if (window.confirm("Are you sure you want to delete this customer?")) {
       deleteCustomer(customerId)
@@ -130,6 +146,7 @@ function CustomerList() {
     }
   };
 
+  // Handles updating a customer
   const handleUpdateCustomer = (updatedCustomer, customerId) => {
     updateCustomer(updatedCustomer, customerId)
       .then(response => {
@@ -142,6 +159,7 @@ function CustomerList() {
       });
   };
 
+  // Handles adding a new customer
   const handleAddCustomer = (newCustomer) => {
     saveCustomer(newCustomer)
       .then(response => {
