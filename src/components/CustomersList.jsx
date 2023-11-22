@@ -4,22 +4,20 @@ import { Snackbar, Button, Box, TextField, Checkbox, FormGroup, FormControlLabel
 import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
 import Pagination from '@mui/material/Pagination';
-
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
-import { fetchCustomers, deleteCustomer, updateCustomer, saveCustomer } from './apiService';
-
 import AddCustomer from './AddCustomer';
 import EditCustomer from './Editcustomer';
+import { deleteCustomer, updateCustomer, saveCustomer } from './apiService';
 
 function CustomerList() {
   const [customers, setCustomers] = useState([]);
   const [open, setOpen] = useState(false);
   const [gridApi, setGridApi] = useState(null);
   const [searchText, setSearchText] = useState('');
-  const API_BASE_URL = import.meta.env.VITE_API_URL;
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
+  const API_BASE_URL = import.meta.env.VITE_API_URL;
 
   const [columnDefs] = useState([
     {
@@ -55,21 +53,19 @@ function CustomerList() {
 
   useEffect(() => {
     fetchCustomers();
-  }, [currentPage, rowsPerPage]); 
+  }, [currentPage, rowsPerPage]);
 
   const pageCount = Math.ceil(customers.length / rowsPerPage);
 
-  // Function to handle page change from the Pagination component
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
-    // Fetch customers for the new page if necessary
   };
 
   const currentCustomers = customers.slice(
     (currentPage - 1) * rowsPerPage,
     currentPage * rowsPerPage
   );
-  
+
   useEffect(() => {
     if (gridApi) {
       gridApi.setColumnDefs(columnDefs.filter(col => visibleColumns.includes(col.field)));
@@ -108,7 +104,7 @@ function CustomerList() {
       const updatedCustomer = { ...event.data, [event.colDef.field]: event.value };
       updateCustomer(updatedCustomer, getCustomerIdFromLink(event.data.links[0].href));
     }
-  };  
+  };
 
   const fetchCustomers = () => {
     fetch(`${API_BASE_URL}/customers`)
@@ -161,42 +157,42 @@ function CustomerList() {
   return (
     <>
       <Box sx={{ marginBottom: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-around' }}>
-      <Box sx={{ alignSelf: 'start' }}>
-        <AddCustomer saveCustomer={handleAddCustomer} />
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={exportToCsv}
-          sx={{ margin: '1rem' }}
-          endIcon={<SendIcon />}
-        >
-          Export to CSV
-        </Button>
-      </Box>
-      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-        <TextField 
-          label="Search"
-          value={searchText}
-          onChange={(e) => setSearchText(e.target.value)}
-          sx={{ margin: '1rem', flex: 1, minWidth: '250px', maxWidth: '500px' }}
-        />
-        <FormGroup row>
-        {columnDefs.map((col, index) => (
-          <FormControlLabel
-            key={index}
-            control={
-              <Checkbox
-                checked={visibleColumns.includes(col.field)}
-                onChange={handleColumnVisibilityChange}
-                name={col.field}
-              />
-            }
-            label={col.headerName}
+        <Box sx={{ alignSelf: 'start' }}>
+          <AddCustomer saveCustomer={handleAddCustomer} />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={exportToCsv}
+            sx={{ margin: '1rem' }}
+            endIcon={<SendIcon />}
+          >
+            Export to CSV
+          </Button>
+        </Box>
+        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+          <TextField
+            label="Search"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)}
+            sx={{ margin: '1rem', flex: 1, minWidth: '250px', maxWidth: '500px' }}
           />
-        ))}
-      </FormGroup>
+          <FormGroup row>
+            {columnDefs.map((col, index) => (
+              <FormControlLabel
+                key={index}
+                control={
+                  <Checkbox
+                    checked={visibleColumns.includes(col.field)}
+                    onChange={handleColumnVisibilityChange}
+                    name={col.field}
+                  />
+                }
+                label={col.headerName}
+              />
+            ))}
+          </FormGroup>
+        </Box>
       </Box>
-    </Box>
       <div className='ag-theme-material' style={{ height: 420, width: '100%' }}>
         <AgGridReact
           rowData={currentCustomers}

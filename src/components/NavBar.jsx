@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Link } from 'react-router-dom'; 
+import { Link } from 'react-router-dom';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -25,16 +25,16 @@ const darkTheme = createTheme({
 
 const drawerWidth = 240;
 const navItems = [
-    { name: 'Customers', path: '/customers' },
-    { name: 'Trainings', path: '/trainings' },
-    { name: 'Calendar', path: '/calendar' },
-    { name: 'Statistics', path: '/statistics' }
+  { name: 'Customers', path: '/customers' },
+  { name: 'Trainings', path: '/trainings' },
+  { name: 'Calendar', path: '/calendar' },
+  { name: 'Statistics', path: '/statistics' }
 ];
 
 function DrawerAppBar(props) {
 
   const theme = useTheme();
-  
+
   const { window } = props;
   const [mobileOpen, setMobileOpen] = React.useState(false);
 
@@ -68,35 +68,35 @@ function DrawerAppBar(props) {
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       <ThemeProvider theme={darkTheme}>
-      <AppBar position="fixed" component="nav">
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { sm: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography
-            variant="h6"
-            component="div"
-            sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
-          >
-            PersonalTrainer
-          </Typography>
-          <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
-            {navItems.map((item) => (
-              <Link to={item.path} style={{ textDecoration: 'none', color: '#fff' }} key={item.name}>
-                <Button sx={{ color: '#fff' }}>
-                  {item.name}
-                </Button>
-              </Link>
-            ))}
-          </Box>
-        </Toolbar>
-      </AppBar>
+        <AppBar position="fixed" component="nav">
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2, display: { sm: 'none' } }}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography
+              variant="h6"
+              component="div"
+              sx={{ flexGrow: 1, display: { xs: 'none', sm: 'block' } }}
+            >
+              PersonalTrainer
+            </Typography>
+            <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
+              {navItems.map((item) => (
+                <Link to={item.path} style={{ textDecoration: 'none', color: '#fff' }} key={item.name}>
+                  <Button sx={{ color: '#fff' }}>
+                    {item.name}
+                  </Button>
+                </Link>
+              ))}
+            </Box>
+          </Toolbar>
+        </AppBar>
       </ThemeProvider>
       <div style={{ ...theme.mixins.toolbar }}></div>
       <nav>
@@ -117,7 +117,7 @@ function DrawerAppBar(props) {
         </Drawer>
       </nav>
     </Box>
-  );  
+  );
 }
 
 export default DrawerAppBar;

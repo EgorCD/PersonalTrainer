@@ -21,12 +21,12 @@ export default function EditCustomer(props) {
 
     const handleClickOpen = () => {
         setCustomer({
-            firstname: props.customer.firstname, 
-            lastname: props.customer.lastname, 
-            streetaddress: props.customer.streetaddress, 
-            postcode: props.customer.postcode, 
-            city: props.customer.city, 
-            email: props.customer.email, 
+            firstname: props.customer.firstname,
+            lastname: props.customer.lastname,
+            streetaddress: props.customer.streetaddress,
+            postcode: props.customer.postcode,
+            city: props.customer.city,
+            email: props.customer.email,
             phone: props.customer.phone
         });
         setOpen(true);
@@ -45,7 +45,7 @@ export default function EditCustomer(props) {
         handleClose();
     };
 
-    return(
+    return (
         <React.Fragment>
             <Button onClick={handleClickOpen}><EditIcon /></Button>
             <Dialog open={open} onClose={handleClose}>

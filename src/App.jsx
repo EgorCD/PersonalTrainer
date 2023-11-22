@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { Container } from "@mui/material";
 import NavBar from './components/NavBar';
-import { Outlet } from 'react-router-dom'; // Import Outlet
+import { Outlet } from 'react-router-dom';
 import './components/App.css';
 
 function App() {

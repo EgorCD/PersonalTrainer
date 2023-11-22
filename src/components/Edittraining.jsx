@@ -5,7 +5,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
-import moment from 'moment'; // For date formatting
+import moment from 'moment';
 import EditIcon from '@mui/icons-material/Edit';
 
 export default function EditTraining(props) {
@@ -14,7 +14,7 @@ export default function EditTraining(props) {
     date: '',
     duration: '',
     activity: '',
-    customer: '' // Assuming this is a URL to the customer as per your API structure
+    customer: ''
   });
 
   const handleClickOpen = () => {
@@ -33,12 +33,12 @@ export default function EditTraining(props) {
 
   const handleInputChange = (event) => {
     setTraining({ ...training, [event.target.name]: event.target.value });
-};
+  };
 
-const updateTraining = () => {
+  const updateTraining = () => {
     props.updateTraining(training);
     handleClose();
-};
+  };
 
   return (
     <React.Fragment>

@@ -16,12 +16,12 @@ import '@fontsource/roboto/700.css';
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />, // The App component wraps your routes
+    element: <App />,
     errorElement: <Error />,
     children: [
       {
         index: true,
-        element: <CustomersList /> // Assuming you have a Home component
+        element: <CustomersList />
       },
       {
         path: "customers",

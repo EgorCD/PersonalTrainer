@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-const API_BASE_URL_TRAININGS = import.meta.env.VITE_API_URL_TRAININGS;
 
 const localizer = momentLocalizer(moment);
+const API_BASE_URL_TRAININGS = import.meta.env.VITE_API_URL_TRAININGS;
 
 function TrainingCalendar() {
   const [trainings, setTrainings] = useState([]);
@@ -16,7 +16,7 @@ function TrainingCalendar() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      return data; 
+      return data;
     } catch (error) {
       console.error("Could not fetch trainings: ", error);
     }

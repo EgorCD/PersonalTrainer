@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { Snackbar, Button, Box, TextField, Checkbox, FormGroup, FormControlLabel } from '@mui/material';
+import { addTraining, updateTraining, deleteTraining } from './apiService';
 import Addtraining from './Addtraining';
 import EditTraining from './EditTraining';
-import moment from 'moment'; 
+import moment from 'moment';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
-import { fetchTrainings, addTraining, updateTraining, deleteTraining } from './apiService'; // Import from apiService.js
 import Pagination from '@mui/material/Pagination';
 
 function TrainingsList() {
@@ -14,10 +14,10 @@ function TrainingsList() {
   const [open, setOpen] = useState(false);
   const [gridApi, setGridApi] = useState(null);
   const [searchText, setSearchText] = useState('');
-  const API_BASE_URL_TRAININGS = import.meta.env.VITE_API_URL_TRAININGS;
   const [currentPage, setCurrentPage] = useState(1);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  
+  const API_BASE_URL_TRAININGS = import.meta.env.VITE_API_URL_TRAININGS;
+
   const [columnDefs] = useState([
     {
       headerName: 'Actions',
@@ -32,7 +32,7 @@ function TrainingsList() {
             <EditTraining updateTraining={(updatedTraining) => handleUpdateTraining(updatedTraining, trainingId)} training={params.data} />
           </>
         );
-      },      
+      },
     },
     {
       headerName: 'Date',
@@ -68,7 +68,7 @@ function TrainingsList() {
       filter: true,
       editable: false,
       cellStyle: { 'font-weight': 'bold', 'font-family': 'Roboto, sans-serif' },
-    },    
+    },
   ]);
 
   const [visibleColumns, setVisibleColumns] = useState(columnDefs.map(col => col.field));
@@ -79,14 +79,12 @@ function TrainingsList() {
 
   useEffect(() => {
     fetchTrainings();
-  }, [currentPage, rowsPerPage]); 
+  }, [currentPage, rowsPerPage]);
 
   const pageCount = Math.ceil(trainings.length / rowsPerPage);
 
-  // Function to handle page change from the Pagination component
   const handlePageChange = (event, value) => {
     setCurrentPage(value);
-    // Fetch customers for the new page if necessary
   };
 
   const currentTrainings = trainings.slice(
@@ -117,12 +115,12 @@ function TrainingsList() {
     gridApi.exportDataAsCsv({
       columnKeys: exportColumns
     });
-  }; 
+  };
 
   const onGridReady = (params) => {
     setGridApi(params.api);
   };
-  
+
   const onCellEditingStopped = (event) => {
     if (event.value !== event.oldValue) {
       console.log("sth");
@@ -174,7 +172,7 @@ function TrainingsList() {
           </Button>
         </Box>
         <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
-          <TextField 
+          <TextField
             label="Search"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
@@ -227,7 +225,7 @@ function TrainingsList() {
         message="Action was successful"
       />
     </>
-  );  
+  );
 }
 
 export default TrainingsList;
