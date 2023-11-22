@@ -2,10 +2,12 @@ import { useState, useEffect } from "react";
 import { AgGridReact } from "ag-grid-react";
 import { Snackbar, Button, Box, TextField, Checkbox, FormGroup, FormControlLabel } from "@mui/material";
 import DeleteIcon from '@mui/icons-material/Delete';
+import SendIcon from '@mui/icons-material/Send';
+import Pagination from '@mui/material/Pagination';
 
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
-import { fetchCustomers, deleteCustomer, updateCustomer, saveCustomer } from './apiService'; // Import from apiService.js
+import { fetchCustomers, deleteCustomer, updateCustomer, saveCustomer } from './apiService';
 
 import AddCustomer from './AddCustomer';
 import EditCustomer from './Editcustomer';
@@ -16,6 +18,8 @@ function CustomerList() {
   const [gridApi, setGridApi] = useState(null);
   const [searchText, setSearchText] = useState('');
   const API_BASE_URL = import.meta.env.VITE_API_URL;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const [columnDefs] = useState([
     {
@@ -35,10 +39,10 @@ function CustomerList() {
         );
       }
     },
-    { headerName: 'First Name', field: 'firstname', sortable: true, filter: true, editable: true },
-    { headerName: 'Last Name', field: 'lastname', sortable: true, filter: true, editable: true },
-    { headerName: 'Email', field: 'email', sortable: true, filter: true, editable: true },
-    { headerName: 'Phone', field: 'phone', sortable: true, filter: true, editable: true },
+    { headerName: 'First Name', field: 'firstname', sortable: true, filter: true, cellStyle: { 'font-weight': 'bold', 'font-family': 'Roboto, sans-serif' }, editable: true },
+    { headerName: 'Last Name', field: 'lastname', sortable: true, filter: true, cellStyle: { 'font-weight': 'bold', 'font-family': 'Roboto, sans-serif' }, editable: true },
+    { headerName: 'Email', field: 'email', sortable: true, filter: true, cellStyle: { 'font-weight': 'bold', 'font-family': 'Roboto, sans-serif' }, editable: true },
+    { headerName: 'Phone', field: 'phone', sortable: true, filter: true, cellStyle: { 'font-weight': 'bold', 'font-family': 'Roboto, sans-serif' }, editable: true },
     { headerName: 'Address', field: 'streetaddress', sortable: true, filter: true, editable: true },
     { headerName: 'City', field: 'city', sortable: true, filter: true, editable: true },
   ]);
@@ -48,6 +52,23 @@ function CustomerList() {
   useEffect(() => {
     fetchCustomers()
   }, []);
+
+  useEffect(() => {
+    fetchCustomers();
+  }, [currentPage, rowsPerPage]); 
+
+  const pageCount = Math.ceil(customers.length / rowsPerPage);
+
+  // Function to handle page change from the Pagination component
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+    // Fetch customers for the new page if necessary
+  };
+
+  const currentCustomers = customers.slice(
+    (currentPage - 1) * rowsPerPage,
+    currentPage * rowsPerPage
+  );
   
   useEffect(() => {
     if (gridApi) {
@@ -139,30 +160,27 @@ function CustomerList() {
 
   return (
     <>
-      <Box sx={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}>
-        <Box>
-          <AddCustomer saveCustomer={handleAddCustomer} />
-        </Box>
-        <Box>
-          <TextField 
-            label="Search"
-            variant="outlined"
-            value={searchText}
-            onChange={(e) => setSearchText(e.target.value)}
-            style={{ marginBottom: '1rem' }}
-            sx={{ flex: 1, minWidth: '250px', maxWidth: '500px', marginLeft: 'auto' }}
-          />
-        </Box>
+      <Box sx={{ marginBottom: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-around' }}>
+      <Box sx={{ alignSelf: 'start' }}>
+        <AddCustomer saveCustomer={handleAddCustomer} />
         <Button
           variant="contained"
           color="primary"
           onClick={exportToCsv}
-          style={{ marginBottom: '10px' }}
+          sx={{ margin: '1rem' }}
+          endIcon={<SendIcon />}
         >
           Export to CSV
         </Button>
       </Box>
-      <FormGroup row>
+      <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+        <TextField 
+          label="Search"
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+          sx={{ margin: '1rem', flex: 1, minWidth: '250px', maxWidth: '500px' }}
+        />
+        <FormGroup row>
         {columnDefs.map((col, index) => (
           <FormControlLabel
             key={index}
@@ -177,22 +195,31 @@ function CustomerList() {
           />
         ))}
       </FormGroup>
-      <div className='ag-theme-material' style={{ height: 600, width: '100%' }}>
+      </Box>
+    </Box>
+      <div className='ag-theme-material' style={{ height: 420, width: '100%' }}>
         <AgGridReact
-          rowData={customers}
+          rowData={currentCustomers}
           columnDefs={columnDefs}
           defaultColDef={{
             flex: 1,
             minWidth: 100,
             resizable: true
           }}
-          pagination={true}
+          pagination={false}
           paginationPageSize={10}
           suppressCellSelection={true}
           onCellEditingStopped={onCellEditingStopped}
           onGridReady={onGridReady}
         />
       </div>
+      <Pagination
+        count={pageCount}
+        page={currentPage}
+        onChange={handlePageChange}
+        showFirstButton
+        showLastButton
+      />
       <Snackbar
         open={open}
         autoHideDuration={3000}

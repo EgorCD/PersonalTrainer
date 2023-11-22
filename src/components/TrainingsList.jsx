@@ -5,7 +5,9 @@ import Addtraining from './Addtraining';
 import EditTraining from './EditTraining';
 import moment from 'moment'; 
 import DeleteIcon from '@mui/icons-material/Delete';
+import SendIcon from '@mui/icons-material/Send';
 import { fetchTrainings, addTraining, updateTraining, deleteTraining } from './apiService'; // Import from apiService.js
+import Pagination from '@mui/material/Pagination';
 
 function TrainingsList() {
   const [trainings, setTrainings] = useState([]);
@@ -13,11 +15,13 @@ function TrainingsList() {
   const [gridApi, setGridApi] = useState(null);
   const [searchText, setSearchText] = useState('');
   const API_BASE_URL_TRAININGS = import.meta.env.VITE_API_URL_TRAININGS;
+  const [currentPage, setCurrentPage] = useState(1);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
   
   const [columnDefs] = useState([
     {
-      headerName: 'Delete',
-      field: 'delete',
+      headerName: 'Actions',
+      field: 'actions',
       sortable: false,
       filter: false,
       cellRenderer: params => {
@@ -25,19 +29,6 @@ function TrainingsList() {
         return (
           <>
             <Button size='small' color="error" onClick={() => handleDeleteTraining(trainingId)}><DeleteIcon /></Button>
-          </>
-        );
-      },      
-    },
-    {
-      headerName: 'Edit',
-      field: 'edit',
-      sortable: false,
-      filter: false,
-      cellRenderer: params => {
-        const trainingId = params.data.id;
-        return (
-          <>
             <EditTraining updateTraining={(updatedTraining) => handleUpdateTraining(updatedTraining, trainingId)} training={params.data} />
           </>
         );
@@ -64,6 +55,7 @@ function TrainingsList() {
       sortable: true,
       filter: true,
       editable: true,
+      cellStyle: { 'font-weight': 'bold', 'font-family': 'Roboto, sans-serif' },
     },
     {
       headerName: 'Customer',
@@ -75,6 +67,7 @@ function TrainingsList() {
       sortable: true,
       filter: true,
       editable: false,
+      cellStyle: { 'font-weight': 'bold', 'font-family': 'Roboto, sans-serif' },
     },    
   ]);
 
@@ -83,6 +76,23 @@ function TrainingsList() {
   useEffect(() => {
     fetchTrainings();
   }, []);
+
+  useEffect(() => {
+    fetchTrainings();
+  }, [currentPage, rowsPerPage]); 
+
+  const pageCount = Math.ceil(trainings.length / rowsPerPage);
+
+  // Function to handle page change from the Pagination component
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+    // Fetch customers for the new page if necessary
+  };
+
+  const currentTrainings = trainings.slice(
+    (currentPage - 1) * rowsPerPage,
+    currentPage * rowsPerPage
+  );
 
   useEffect(() => {
     if (gridApi) {
@@ -150,68 +160,74 @@ function TrainingsList() {
 
   return (
     <>
-      <Box sx={{ marginBottom: '1rem', display: 'flex', alignItems: 'center', justifyContent: 'space-around' }}>
-        <Box>
+      <Box sx={{ marginBottom: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-around' }}>
+        <Box sx={{ alignSelf: 'flex-start' }}>
           <Addtraining saveTraining={handleAddTraining} />
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={exportToCsv}
+            sx={{ margin: '1rem' }}
+            endIcon={<SendIcon />}
+          >
+            Export to CSV
+          </Button>
         </Box>
-        <Box>
-          <TextField
+        <Box sx={{ width: '100%', display: 'flex', justifyContent: 'space-between' }}>
+          <TextField 
             label="Search"
-            variant="outlined"
             value={searchText}
             onChange={(e) => setSearchText(e.target.value)}
-            style={{ marginBottom: '1rem' }}
+            sx={{ margin: '1rem', flex: 1, minWidth: '250px', maxWidth: '500px' }}
           />
-        </Box>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={exportToCsv}
-          style={{ marginBottom: '10px' }}
-        >
-          Export to CSV
-        </Button>
-      </Box>
-      <FormGroup row>
-        {columnDefs.map((col, index) => (
-          <FormControlLabel
-            key={index}
-            control={
-              <Checkbox
-                checked={visibleColumns.includes(col.field)}
-                onChange={handleColumnVisibilityChange}
-                name={col.field}
+          <FormGroup row>
+            {columnDefs.map((col, index) => (
+              <FormControlLabel
+                key={index}
+                control={
+                  <Checkbox
+                    checked={visibleColumns.includes(col.field)}
+                    onChange={handleColumnVisibilityChange}
+                    name={col.field}
+                  />
+                }
+                label={col.headerName}
               />
-            }
-            label={col.headerName}
-          />
-        ))}
-      </FormGroup>
-      
-      <div className='ag-theme-material' style={{ height: 600, width: '100%' }}>
+            ))}
+          </FormGroup>
+        </Box>
+      </Box>
+      <div className='ag-theme-material' style={{ height: 420, width: '100%' }}>
         <AgGridReact
-          rowData={trainings}
+          rowData={currentTrainings}
           columnDefs={columnDefs}
           defaultColDef={{
             flex: 1,
             minWidth: 100,
             resizable: true
           }}
-          pagination={true}
+          pagination={false}
           paginationPageSize={10}
           suppressCellSelection={true}
           onCellEditingStopped={onCellEditingStopped}
           onGridReady={onGridReady}
         />
       </div>
+      <Pagination
+        count={pageCount}
+        page={currentPage}
+        onChange={handlePageChange}
+        showFirstButton
+        showLastButton
+      />
       <Snackbar
         open={open}
         autoHideDuration={3000}
         onClose={() => setOpen(false)}
-        message="Action was successfull"
+        message="Action was successful"
       />
     </>
-  );
+  );  
 }
 
 export default TrainingsList;

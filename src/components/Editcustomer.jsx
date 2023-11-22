@@ -5,6 +5,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import EditIcon from '@mui/icons-material/Edit';
 
 export default function EditCustomer(props) {
     const [open, setOpen] = React.useState(false);
@@ -46,9 +47,7 @@ export default function EditCustomer(props) {
 
     return(
         <React.Fragment>
-            <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-                Edit
-            </Button>
+            <Button onClick={handleClickOpen}><EditIcon /></Button>
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Edit Customer</DialogTitle>
                 <DialogContent>

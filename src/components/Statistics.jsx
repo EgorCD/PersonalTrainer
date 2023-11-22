@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
 import _ from 'lodash';
+const API_BASE_URL_TRAININGS = import.meta.env.VITE_API_URL_TRAININGS;
 
 const Statistics = () => {
   const [activityData, setActivityData] = useState([]);
@@ -10,7 +11,7 @@ const Statistics = () => {
   }, []);
 
   const fetchStatistics = () => {
-    fetch('http://traineeapp.azurewebsites.net/gettrainings')
+    fetch(`${API_BASE_URL_TRAININGS}/gettrainings`)
       .then(response => response.json())
       .then(data => {
         const processedData = processData(data);
@@ -35,7 +36,7 @@ const Statistics = () => {
   return (
       <BarChart
         width={600}
-        height={300}
+        height={600}
         data={activityData}
         margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
       >

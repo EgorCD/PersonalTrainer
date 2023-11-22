@@ -6,6 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import moment from 'moment';
+import AddIcon from '@mui/icons-material/Add';
 
 export default function AddTraining(props) {
     const [open, setOpen] = useState(false);
@@ -41,7 +42,7 @@ export default function AddTraining(props) {
 
     return (
         <React.Fragment>
-            <Button style={{ margin: 10 }} variant="outlined" color="primary" onClick={handleClickOpen}>
+            <Button style={{ margin: 10 }} variant="contained" color="success" startIcon={<AddIcon />} onClick={handleClickOpen}>
                 Add Training
             </Button>
             <Dialog open={open} onClose={handleClose}>
@@ -94,7 +95,7 @@ export default function AddTraining(props) {
                     <Button onClick={handleClose} color="secondary">
                         Cancel
                     </Button>
-                    <Button onClick={addTraining} color="primary">
+                    <Button onClick={addTraining} disabled={!training.customer} color="primary">
                         Save
                     </Button>
                 </DialogActions>

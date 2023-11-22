@@ -15,6 +15,13 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { useTheme } from '@mui/material/styles';
+import { ThemeProvider, createTheme } from '@mui/material/styles';
+
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+  },
+});
 
 const drawerWidth = 240;
 const navItems = [
@@ -60,6 +67,7 @@ function DrawerAppBar(props) {
   return (
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
+      <ThemeProvider theme={darkTheme}>
       <AppBar position="fixed" component="nav">
         <Toolbar>
           <IconButton
@@ -89,6 +97,7 @@ function DrawerAppBar(props) {
           </Box>
         </Toolbar>
       </AppBar>
+      </ThemeProvider>
       <div style={{ ...theme.mixins.toolbar }}></div>
       <nav>
         <Drawer

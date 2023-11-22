@@ -1,15 +1,13 @@
-/* App.css */
 
-/* Add padding to the top of the main container to prevent overlap with the navbar */
 .container {
-    padding-top: 40px; /* Adjust this value based on the actual height of your navbar */
+    padding-top: 40px; 
   }
   
-  /* Ensure the navbar extends the full width and is fixed at the top */
+
   .navbar {
     width: 100%;
     position: fixed;
     top: 0;
-    z-index: 1000; /* Keep the navbar above other content */
+    z-index: 1000; 
   }
   

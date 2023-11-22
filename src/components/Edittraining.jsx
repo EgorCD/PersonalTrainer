@@ -6,6 +6,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import moment from 'moment'; // For date formatting
+import EditIcon from '@mui/icons-material/Edit';
 
 export default function EditTraining(props) {
   const [open, setOpen] = useState(false);
@@ -41,9 +42,7 @@ const updateTraining = () => {
 
   return (
     <React.Fragment>
-      <Button variant="outlined" color="primary" onClick={handleClickOpen}>
-        Edit Training
-      </Button>
+      <Button onClick={handleClickOpen}><EditIcon /></Button>
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Edit Training</DialogTitle>
         <DialogContent>
@@ -89,6 +88,9 @@ const updateTraining = () => {
             fullWidth
             value={training.customer.id}
             onChange={e => handleInputChange(e)}
+            InputProps={{
+              readOnly: true,
+            }}
             variant="standard"
           />
         </DialogContent>
@@ -96,7 +98,7 @@ const updateTraining = () => {
           <Button onClick={handleClose} color="primary">
             Cancel
           </Button>
-          <Button onClick={updateTraining} color="primary">
+          <Button onClick={updateTraining} disabled={!training.customer} color="primary">
             Save
           </Button>
         </DialogActions>

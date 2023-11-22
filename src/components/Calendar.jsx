@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Calendar, momentLocalizer } from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+const API_BASE_URL_TRAININGS = import.meta.env.VITE_API_URL_TRAININGS;
 
 const localizer = momentLocalizer(moment);
 
@@ -10,7 +11,7 @@ function TrainingCalendar() {
 
   const fetchTrainings = async () => {
     try {
-      const response = await fetch('http://traineeapp.azurewebsites.net/gettrainings');
+      const response = await fetch(`${API_BASE_URL_TRAININGS}/gettrainings`);
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
@@ -40,7 +41,7 @@ function TrainingCalendar() {
         events={trainings}
         startAccessor="start"
         endAccessor="end"
-        style={{ height: '100vh' }}
+        style={{ height: '80vh' }}
         views={['month', 'week', 'day', 'agenda']}
       />
     </div>
