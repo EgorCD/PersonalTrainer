@@ -10,13 +10,18 @@ import moment from 'moment';
 
 export default function AddTraining(props) {
 
+    const getCustomerIdFromLink = (link) => {
+        const parts = link.split('/');
+        return parts[parts.length - 1];
+    };
+
     // State hooks for managing the dialog's open state and training data
     const [open, setOpen] = useState(false);
     const [training, setTraining] = useState({
         date: '',
         duration: '',
         activity: '',
-        customer: ''
+        customer: getCustomerIdFromLink(props.customer.links[0].href)
     });
 
     // Function to handle dialog open action
@@ -48,8 +53,8 @@ export default function AddTraining(props) {
 
     return (
         <React.Fragment>
-            <Button style={{ margin: 10 }} variant="contained" color="success" startIcon={<AddIcon />} onClick={handleClickOpen}>
-                Add Training
+            <Button variant="contained" color="success" startIcon={<AddIcon />} onClick={handleClickOpen}>
+                Add
             </Button>
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>Add New Training</DialogTitle>

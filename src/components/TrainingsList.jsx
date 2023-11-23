@@ -150,13 +150,6 @@ function TrainingsList() {
       .catch(error => console.error('Error fetching trainings:', error));
   };
 
-  // Handles adding a new training
-  const handleAddTraining = (newTraining) => {
-    addTraining(newTraining)
-      .then(() => fetchTrainings())
-      .catch(error => console.error('Error adding training:', error));
-  };
-
   // Handles updating a training
   const handleUpdateTraining = (updatedTraining, trainingId) => {
     updateTraining(updatedTraining, trainingId)
@@ -177,7 +170,6 @@ function TrainingsList() {
     <>
       <Box sx={{ marginBottom: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-around' }}>
         <Box sx={{ alignSelf: 'flex-start' }}>
-          <Addtraining saveTraining={handleAddTraining} />
           <Button
             variant="contained"
             color="primary"
@@ -212,7 +204,7 @@ function TrainingsList() {
           </FormGroup>
         </Box>
       </Box>
-      <div className='ag-theme-material' style={{ height: 420, width: '100%' }}>
+      <div className='ag-theme-material' style={{ height: 500, width: '100%' }}>
         <AgGridReact
           rowData={currentTrainings}
           columnDefs={columnDefs}

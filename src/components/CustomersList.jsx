@@ -8,7 +8,9 @@ import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
 import Addcustomer from './Addcustomer';
 import Editcustomer from './Editcustomer';
+import Addtraining from './Addtraining';
 import { deleteCustomer, updateCustomer, saveCustomer } from './apiService';
+import { addTraining, updateTraining, deleteTraining } from './apiService';
 
 function CustomerList() {
 
@@ -45,7 +47,24 @@ function CustomerList() {
     { headerName: 'Phone', field: 'phone', sortable: true, filter: true, cellStyle: { 'font-weight': 'bold', 'font-family': 'Roboto, sans-serif' }, editable: true },
     { headerName: 'Address', field: 'streetaddress', sortable: true, filter: true, editable: true },
     { headerName: 'City', field: 'city', sortable: true, filter: true, editable: true },
+    {
+      headerName: "Add Training",
+      field: "addTraining",
+      sortable: false,
+      filter: false,
+      cellRenderer: (params) => <Addtraining saveTraining={handleAddTraining} customer={params.data} />
+  },
   ]);
+
+  // Handles adding a new training
+  const handleAddTraining = (newTraining) => {
+    addTraining(newTraining)
+      .then(() => {
+        fetchCustomers();
+        setOpen(true); // Set open to true to show the success message
+      })
+      .catch(error => console.error('Error adding training:', error));
+  };
 
   // Stores the fields of the columns that are currently visible
   const [visibleColumns, setVisibleColumns] = useState(columnDefs.map(col => col.field));
@@ -211,7 +230,7 @@ function CustomerList() {
           </FormGroup>
         </Box>
       </Box>
-      <div className='ag-theme-material' style={{ height: 420, width: '100%' }}>
+      <div className='ag-theme-material' style={{ height: 500, width: '100%' }}>
         <AgGridReact
           rowData={currentCustomers}
           columnDefs={columnDefs}
