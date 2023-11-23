@@ -204,7 +204,7 @@ function TrainingsList() {
           </FormGroup>
         </Box>
       </Box>
-      <div className='ag-theme-material' style={{ height: 500, width: '100%' }}>
+      <div className='ag-theme-material' style={{ height: 420, width: '100%' }}>
         <AgGridReact
           rowData={currentTrainings}
           columnDefs={columnDefs}
