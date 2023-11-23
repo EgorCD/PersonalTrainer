@@ -6,8 +6,8 @@ import SendIcon from '@mui/icons-material/Send';
 import Pagination from '@mui/material/Pagination';
 import "ag-grid-community/styles/ag-grid.css";
 import "ag-grid-community/styles/ag-theme-material.css";
-import AddCustomer from './AddCustomer';
-import EditCustomer from './Editcustomer';
+import Addcustomer from './Addcustomer';
+import Editcustomer from './Editcustomer';
 import { deleteCustomer, updateCustomer, saveCustomer } from './apiService';
 
 function CustomerList() {
@@ -34,7 +34,7 @@ function CustomerList() {
             <Button size='small' color="error" onClick={() => handleDeleteCustomer(customerId)}>
               <DeleteIcon />
             </Button>
-            <EditCustomer updateCustomer={(updatedCustomer) => handleUpdateCustomer(updatedCustomer, customerId)} customer={params.data} />
+            <Editcustomer updateCustomer={(updatedCustomer) => handleUpdateCustomer(updatedCustomer, customerId)} customer={params.data} />
           </>
         );
       }
@@ -176,7 +176,7 @@ function CustomerList() {
     <>
       <Box sx={{ marginBottom: '1rem', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'space-around' }}>
         <Box sx={{ alignSelf: 'start' }}>
-          <AddCustomer saveCustomer={handleAddCustomer} />
+          <Addcustomer saveCustomer={handleAddCustomer} />
           <Button
             variant="contained"
             color="primary"

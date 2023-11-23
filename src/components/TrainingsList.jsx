@@ -3,7 +3,7 @@ import { AgGridReact } from 'ag-grid-react';
 import { Snackbar, Button, Box, TextField, Checkbox, FormGroup, FormControlLabel } from '@mui/material';
 import { addTraining, updateTraining, deleteTraining } from './apiService';
 import Addtraining from './Addtraining';
-import EditTraining from './EditTraining';
+import Edittraining from './Edittraining';
 import moment from 'moment';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
@@ -31,7 +31,7 @@ function TrainingsList() {
         return (
           <>
             <Button size='small' color="error" onClick={() => handleDeleteTraining(trainingId)}><DeleteIcon /></Button>
-            <EditTraining updateTraining={(updatedTraining) => handleUpdateTraining(updatedTraining, trainingId)} training={params.data} />
+            <Edittraining updateTraining={(updatedTraining) => handleUpdateTraining(updatedTraining, trainingId)} training={params.data} />
           </>
         );
       },
