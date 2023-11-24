@@ -2,7 +2,7 @@ const API_BASE_URL = import.meta.env.VITE_API_URL;
 const API_BASE_URL_TRAININGS = import.meta.env.VITE_API_URL_TRAININGS;
 
 export const fetchCustomers = () => {
-    return fetch(`${API_BASE_URL}/customers`)
+    return fetch(`${API_BASE_URL}/customers?timezoneOffset=${timeZoneOffset}`)
         .then(response => {
             if (!response.ok) throw new Error("Something went wrong: " + response.statusText);
             return response.json();
@@ -32,7 +32,7 @@ export const saveCustomer = (customer) => {
 };
 
 export const fetchTrainings = () => {
-    return fetch(`${API_BASE_URL_TRAININGS}/gettrainings`)
+    return fetch(`${API_BASE_URL_TRAININGS}/gettrainings?timezoneOffset=${timeZoneOffset}`)
         .then(response => response.json());
 };
 

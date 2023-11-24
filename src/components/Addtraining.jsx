@@ -100,6 +100,9 @@ export default function AddTraining(props) {
                         type="text"
                         fullWidth
                         variant="standard"
+                        InputProps={{
+                            readOnly: true,
+                        }}
                     />
                 </DialogContent>
                 <DialogActions>

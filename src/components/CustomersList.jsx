@@ -10,7 +10,7 @@ import Addcustomer from './Addcustomer';
 import Editcustomer from './Editcustomer';
 import Addtraining from './Addtraining';
 import { deleteCustomer, updateCustomer, saveCustomer } from './apiService';
-import { addTraining, updateTraining, deleteTraining } from './apiService';
+import { addTraining } from './apiService';
 
 function CustomerList() {
 
@@ -22,7 +22,7 @@ function CustomerList() {
   const [currentPage, setCurrentPage] = useState(1); // State for current page in pagination
   const [rowsPerPage, setRowsPerPage] = useState(10); // State for rows per page in pagination
   const API_BASE_URL = import.meta.env.VITE_API_URL; // API base URL from environment variables
- 
+
   const [columnDefs] = useState([
     {
       headerName: 'Actions',
@@ -53,18 +53,8 @@ function CustomerList() {
       sortable: false,
       filter: false,
       cellRenderer: (params) => <Addtraining saveTraining={handleAddTraining} customer={params.data} />
-  },
+    },
   ]);
-
-  // Handles adding a new training
-  const handleAddTraining = (newTraining) => {
-    addTraining(newTraining)
-      .then(() => {
-        fetchCustomers();
-        setOpen(true); // Set open to true to show the success message
-      })
-      .catch(error => console.error('Error adding training:', error));
-  };
 
   // Stores the fields of the columns that are currently visible
   const [visibleColumns, setVisibleColumns] = useState(columnDefs.map(col => col.field));
@@ -189,6 +179,16 @@ function CustomerList() {
       .catch(err => {
         console.error('Error adding customer:', err);
       });
+  };
+
+  // Handles adding a new training
+  const handleAddTraining = (newTraining) => {
+    addTraining(newTraining)
+      .then(() => {
+        fetchCustomers();
+        setOpen(true); // Set open to true to show the success message
+      })
+      .catch(error => console.error('Error adding training:', error));
   };
 
   return (

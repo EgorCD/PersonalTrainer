@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { AgGridReact } from 'ag-grid-react';
 import { Snackbar, Button, Box, TextField, Checkbox, FormGroup, FormControlLabel } from '@mui/material';
-import { addTraining, updateTraining, deleteTraining } from './apiService';
+import { updateTraining, deleteTraining } from './apiService';
 import Addtraining from './Addtraining';
 import Edittraining from './Edittraining';
-import moment from 'moment';
+import moment from 'moment-timezone';
 import DeleteIcon from '@mui/icons-material/Delete';
 import SendIcon from '@mui/icons-material/Send';
 import Pagination from '@mui/material/Pagination';
